@@ -1,7 +1,7 @@
 # bnl_larTpc_coldElec_fembTest
 Example cold electronic test script. Performs pedestal RMS measurements for 35t/SBND style FEMBs.
 
-Software Requirements:
+## Software Requirements:
 - Linux environment and command line (tested with Ubuntu 14, bash shell)
 - ROOT and pyRoot libraries (tested with ROOT 6.06)
 - 35t or SBND style FEMB readout with UDP interface firmware
@@ -9,20 +9,22 @@ Software Requirements:
 - python (tested with version 3.3)
 - femb_udp_core project
 
-Interface Requirements:
+## Interface Requirements:
 - UDP interface configured to work with femb_udp_core project
 - no power supply or signal generators used
 
-Output:
+## Output:
 - text file containing pedestal RMS measurements in ADC count units for every FE-ASIC configuration and channel.
 - PNG image showing plot of measured pedestal RMS values
+- list of raw data files
+- list of processed data files
 
-Missing:
+## Missing:
 - GUI
 - measurement status monitor and recovery: if any part of measurement fails or crashes the script will exit with the measurement unfinished
 - database integration
 
-Instructions:
+## Instructions:
 
 1) Check out femb_udp_core and bnl_larTpc_coldElec_fembTest git projects:
 - git clone https://github.com/kirbybri/bnl_larTpc_coldElec_fembTest.git
@@ -44,5 +46,5 @@ Instructions:
 - Data files are processed and summarized by analysis programs
 - Check to see if any errors are reported during measurement or analysis steps
 
-6)Check output summary plot and text file containing pedestal RMS measurements for each configuration + channel.
+6) Check output summary plot and text file containing pedestal RMS measurements for each configuration + channel.
 
