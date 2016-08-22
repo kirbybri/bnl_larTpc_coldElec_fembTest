@@ -3,8 +3,13 @@ import sys
 import string
 from subprocess import call
 from time import sleep
+import os
+import ntpath
+import glob
 
 #CHECK STATUS AND INITIALIZATION
+print "NOISE MEASUREMENT - CHECKING READOUT STATUS"
+
 #specify location of femb_udp package
 PATH_FEMB_UDP = None
 if PATH_FEMB_UDP == None:
@@ -21,6 +26,19 @@ from femb_config import FEMB_CONFIG
 femb_config = FEMB_CONFIG()
 femb_rootdata = FEMB_ROOTDATA()
 
+#check if readout is working
+testData = femb_rootdata.femb.get_data_packets(1)
+if testData == None:
+	print "Error running doFembTest - FEMB is not streaming data."
+	print " Turn on and initialize FEMB UDP readout."
+        print " This script will exit now"
+        sys.exit(0)
+if len(testData) == 0:
+        print "Error running doFembTest - FEMB is not streaming data."
+        print " Turn on and initialize FEMB UDP readout."
+        print " This script will exit now"
+        sys.exit(0)
+
 #check for analysis executables
 if os.path.isfile('./processNtuple') == False:	
 	print 'processNtuple not found, exiting'
@@ -30,8 +48,8 @@ if os.path.isfile('./summaryAnalysis_doFembTest_noiseMeasurement') == False:
 	print 'summaryAnalysis_doFembTest_noiseMeasurement not found, exiting'
 	sys.exit(0)
 
-
 #MEASUREMENT SECTION
+print "NOISE MEASUREMENT - RECORDING DATA"
 
 #initialize readout channel range
 femb_rootdata.minchan = 0
@@ -66,15 +84,11 @@ for g in range(0,4,1):
 filelist.close()
 
 #ANALYSIS SECTION
-
-#check if output file list exists
-if os.path.isfile(filelist) == False:
-	print 'Raw data filelist not found, exiting'
-	sys.exit(0)
+print "NOISE MEASUREMENT - ANALYZING AND SUMMARIZING DATA"
 
 #process data
-newlist = "filelist_processData_noiseMeasurement_" + str(ntpath.basename(filelist))
-input_file = open(filelist, 'r')
+newlist = "filelist_processData_doFembTest_noiseMeasurement_" + str(femb_rootdata.date) + ".txt"
+input_file = open(filelist.name, 'r')
 output_file = open( newlist, "w")
 for line in input_file:
 	filename = str(line[:-1])
@@ -88,11 +102,6 @@ for line in input_file:
 	print newname
 input_file.close()
 output_file.close()
-
-#check if output file list exists
-if os.path.isfile(newlist) == False:
-	print 'Processed data filelist not found, exiting'
-	sys.exit(0)
 
 #run summary program
 call(["./summaryAnalysis_doFembTest_noiseMeasurement", newlist ])
