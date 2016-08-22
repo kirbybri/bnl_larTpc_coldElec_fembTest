@@ -13,6 +13,14 @@ Example cold electronic test script. Performs pedestal RMS measurements for 35t/
 - UDP interface configured to work with femb_udp_core project
 - no power supply or signal generators used
 
+## Method:
+- measurement script starts a "run". Each run has a unique timestamp and metadata variables
+- each run consists of 32 subruns of pedestal data, each recorded with a different FE-ASIC configuration
+- pedestal data is analyzed and RMS measured for each channel in each configuration
+- conversion to ENC is NOT done. Note that RMS measurements by themselves are not particularly interesting
+- summary plots and output data are produced
+- measurement script can be run repeatedly in same directory, all output files have unique names
+
 ## Output:
 - text file containing pedestal RMS measurements in ADC count units for every FE-ASIC configuration and channel.
 - PNG image showing plot of measured pedestal RMS values
