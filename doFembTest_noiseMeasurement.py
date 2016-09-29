@@ -9,7 +9,6 @@ import glob
 
 #specify location of femb_udp package
 PATH_FEMB_UDP = None
-
 class FEMB_TEST:
 
     def __init__(self):
@@ -80,9 +79,9 @@ class FEMB_TEST:
         #initialize output filelist
         self.filelist = open("filelist_doFembTest_noiseMeasurement_" + str(self.femb_rootdata.date) + ".txt", "w")
         subrun = 0
-        for g in range(0,1,1):
-          for s in range(0,1,1):
-            for b in range(0,1,1):
+        for g in range(0,4,1):
+          for s in range(0,4,1):
+            for b in range(0,2,1):
                 #config FE ASICs
                 self.femb_config.configFeAsic(g,s,b)
                 sleep(0.5)

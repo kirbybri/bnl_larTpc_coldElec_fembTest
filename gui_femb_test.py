@@ -142,14 +142,14 @@ class GUI_WINDOW():
 
     def analyze_data(self, window):
         self.femb_test.do_analysis()
-        if self.status_do_analysis == 0:
+        if self.femb_test.status_do_analysis == 0:
             self.do_analysis_entry.set_text("FAILED")
         else:
             self.do_analysis_entry.set_text("COMPLETE")
 
     def archive_results(self, window):
         self.femb_test.archive_results()
-        if status_archive_results == 0:
+        if self.status_archive_results == 0:
             self.archive_results_entry.set_text("FAILED")
         else:
             self.archive_results_entry.set_text("COMPLETE")
