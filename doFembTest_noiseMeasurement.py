@@ -147,8 +147,9 @@ class FEMB_TEST:
         if self.status_archive_results == 1:
             print("Results already archived")
             return
-        #ANALYSIS SECTION
+        #ARCHIVE SECTION
         print("NOISE MEASUREMENT - STORE RESULTS IN DATABASE")
+        self.status_archive_results = 1
 
 def main():
     femb_test = FEMB_TEST()

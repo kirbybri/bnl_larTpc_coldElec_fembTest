@@ -1,5 +1,6 @@
 #!/usr/bin/python3.4
 from gi.repository import Gtk
+#from doFembTest_test import FEMB_TEST
 from doFembTest_noiseMeasurement import FEMB_TEST
 
 class GUI_WINDOW():
@@ -149,7 +150,7 @@ class GUI_WINDOW():
 
     def archive_results(self, window):
         self.femb_test.archive_results()
-        if self.status_archive_results == 0:
+        if self.femb_test.status_archive_results == 0:
             self.archive_results_entry.set_text("FAILED")
         else:
             self.archive_results_entry.set_text("COMPLETE")
