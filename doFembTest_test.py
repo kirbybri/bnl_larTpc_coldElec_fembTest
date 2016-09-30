@@ -1,3 +1,4 @@
+#!/usr/local/bin/python3.5
 import string
 
 #skeleton class for measurement that will work with gui_femb_test

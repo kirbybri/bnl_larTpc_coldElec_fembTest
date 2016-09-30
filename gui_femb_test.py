@@ -1,4 +1,4 @@
-#!/usr/bin/python3.4
+#!/usr/local/bin/python3.5
 from gi.repository import Gtk
 #from doFembTest_test import FEMB_TEST
 from doFembTest_noiseMeasurement import FEMB_TEST

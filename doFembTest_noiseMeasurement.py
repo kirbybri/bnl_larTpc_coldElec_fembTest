@@ -1,4 +1,4 @@
-#!/usr/bin/python3.4
+#!/usr/local/bin/python3.5
 import sys
 import string
 from subprocess import call
@@ -8,7 +8,8 @@ import ntpath
 import glob
 
 #specify location of femb_udp package
-PATH_FEMB_UDP = None
+#PATH_FEMB_UDP = None
+PATH_FEMB_UDP = "/home/kirby/SCRATCH/2016_BNL_coldElec_testStand/femb_udp_core"
 class FEMB_TEST:
 
     def __init__(self):
@@ -149,13 +150,62 @@ class FEMB_TEST:
             return
         #ARCHIVE SECTION
         print("NOISE MEASUREMENT - STORE RESULTS IN DATABASE")
+        constantfiles = glob.glob('output_fembTest_noiseMeasurement_constants_' + '*.txt')
+        if len(constantfiles) == 0:
+            print("Could not find noise measurement constants")
+            #sys.exit(0)
+            return
+        constantfilename = max(constantfiles, key=os.path.getctime)
+        #open constants file
+        input_file = open(constantfilename, 'r')
+
+        #open database, insert results
+        from sqlalchemy import create_engine
+        from sqlalchemy.orm import sessionmaker
+        from setup_database import Base, noise_test, noise_test_ch_result
+
+        engine = create_engine('sqlite:///database_noiseMeasurement.db')
+        Base.metadata.bind = engine
+        DBSession = sessionmaker(bind=engine)
+        session = DBSession()
+
+        #enter noise test
+        new_test = noise_test()
+        new_test.test_id = int(self.femb_rootdata.date)
+        new_test.board_id = 10
+        session.add(new_test)
+        session.commit()
+
+        #loop through constants file, get channel specific results
+        for line in input_file:
+            #print( line )
+            data = line.split()
+            if len(data) != 5:
+                continue
+            gain = int(data[0])
+            shape = int(data[1])
+            base = int(data[2])
+            ch = int(data[3])
+            rms = int(data[4])
+            #enter new channel result
+            new_ch_result = noise_test_ch_result()
+            new_ch_result.test_id = int(self.femb_rootdata.date)
+            new_ch_result.fegain = gain
+            new_ch_result.feshape = shape
+            new_ch_result.baseline = base
+            new_ch_result.ch_id = ch
+            new_ch_result.ch_rms = rms
+            session.add(new_ch_result)
+            session.commit()
+
+        input_file.close()
         self.status_archive_results = 1
 
 def main():
     femb_test = FEMB_TEST()
-    femb_test.check_setup()
-    femb_test.record_data()
-    femb_test.do_analysis()
+    #femb_test.check_setup()
+    #femb_test.record_data()
+    #femb_test.do_analysis()
     femb_test.archive_results()
 
 if __name__ == '__main__':
