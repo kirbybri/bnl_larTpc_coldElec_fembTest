@@ -6,7 +6,9 @@ Example cold electronic test script. Performs pedestal RMS measurements for 35t/
 - ROOT and pyRoot libraries (tested with ROOT 6.06)
 - 35t or SBND style FEMB readout with UDP interface firmware
 - c++11 standard compiler
-- python (tested with version 3.3)
+- python 3 (tested with version 3.5)
+- python sqlalchemy package
+- python sqlite
 - femb_udp_core project
 
 ## Interface Requirements:
@@ -18,7 +20,8 @@ Example cold electronic test script. Performs pedestal RMS measurements for 35t/
 - each run consists of 32 subruns of pedestal data, each recorded with a different FE-ASIC configuration
 - pedestal data is analyzed and RMS measured for each channel in each configuration
 - conversion to ENC is NOT done. Note that RMS measurements by themselves are not particularly interesting
-- summary plots and output data are produced
+- summary plots and RMS measurements are output
+- RMS measurements are stored in a database
 - measurement script can be run repeatedly in same directory, all output files have unique names
 
 ## Output:
@@ -26,11 +29,10 @@ Example cold electronic test script. Performs pedestal RMS measurements for 35t/
 - PNG image showing plot of measured pedestal RMS values
 - list of raw data files
 - list of processed data files
+- database updated
 
 ## Missing:
-- GUI
-- measurement status monitor and recovery: if any part of measurement fails or crashes the script will exit with the measurement unfinished
-- database integration
+- measurement status monitor and recovery: if any part of measurement fails or analysis fails the script will not recover gracefully
 
 ## Instructions:
 
@@ -52,7 +54,7 @@ Example cold electronic test script. Performs pedestal RMS measurements for 35t/
 - Should loop through 32 different FE-ASIC configurations and record data for all 128 FEMB channels each time. 32 subrun files recorded in total to “data” directory.
 - Gain is varied between 4.7,7.8,14,25 mV/fC, shaping time 0.5,1,2,3us and the baseline level between 200/900mV 
 - Data files are processed and summarized by analysis programs
+- RMS measurements stored in a local sqlite database file
 - Check to see if any errors are reported during measurement or analysis steps
 
 6) Check output summary plot and text file containing pedestal RMS measurements for each configuration + channel.
-
