@@ -8,8 +8,8 @@ import ntpath
 import glob
 
 #specify location of femb_udp package
-#PATH_FEMB_UDP = None
-PATH_FEMB_UDP = "/home/kirby/SCRATCH/2016_BNL_coldElec_testStand/femb_udp_core"
+PATH_FEMB_UDP = None
+
 class FEMB_TEST:
 
     def __init__(self):
